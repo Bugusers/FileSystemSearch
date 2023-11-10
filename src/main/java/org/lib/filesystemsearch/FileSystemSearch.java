@@ -27,31 +27,32 @@ public class FileSystemSearch implements SystemSearch {
     }
 
     private void searchFiles(File directory, String fileName, List<String> results) {
-       File[] files = directory.listFiles();
+        try {
+            File[] files = directory.listFiles();
 
-       if (files != null) {
-           List<Thread> threads = new ArrayList<>();
+            if (files != null) {
+                List<Thread> threads = new ArrayList<>();
 
-           for (File file : files) {
-               if (file.isDirectory()) {
-                   searchFiles(file, fileName, results);
-               } else if (file.getName().contains(fileName)){
-                   Thread thread = new Thread(() -> {
-                       results.add(file.getAbsolutePath());
-                   });
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        searchFiles(file, fileName, results);
+                    } else if (file.getName().contains(fileName)){
+                        Thread thread = new Thread(() -> {
+                            results.add(file.getAbsolutePath());
+                        });
 
-                   threads.add(thread);
-                   thread.start();
-               }
-           }
+                        threads.add(thread);
+                        thread.start();
+                    }
+                }
 
-           for (Thread th: threads) {
-               try {
-                   th.join();
-               } catch (InterruptedException e) {
-                   throw new RuntimeException(e);
-               }
-           }
-       }
+                for (Thread th: threads) {
+                    th.join();
+                }
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

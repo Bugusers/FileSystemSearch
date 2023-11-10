@@ -55,10 +55,8 @@ public class FileSystemSearchWithTreadPool implements SystemSearch {
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    // Рекурсивно викликаємо пошук у піддиректорії
                     searchFiles(file, fileName, results, depth + 1);
                 } else if (file.getName().contains(fileName)) {
-                    // Виконуємо обробку файлу у новому потоці з пулу потоків
                     executorService.execute(() -> {
                         results.add(file.getAbsolutePath());
                     });

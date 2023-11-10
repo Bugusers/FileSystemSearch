@@ -11,7 +11,8 @@ public class Main {
     public static void main(String[] args) {
         FileSystemSearch searcher = new FileSystemSearch();
         String directory = Main.class.getClassLoader().getResource("").getPath();
-        String fileName = "test";
+        String fileName = "text";
+
 
         List<String> results1 = searcher.search(directory, fileName);
         printResult(results1);
@@ -20,7 +21,6 @@ public class Main {
         List<String> results2 = searcher2.search(directory, fileName);
         printResult(results2);
 
-        System.out.println(results1.size());
     }
 
     public static void printResult(List<String> results) {
