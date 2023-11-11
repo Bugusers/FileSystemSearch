@@ -1,0 +1,42 @@
+name: File system search app publish pipeline
+on:
+  push:
+    branches:
+      - release
+      - release/**
+    tags:
+      - v*
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 19
+        uses: actions/setup-java@v3
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+          cache: maven
+      - name: Test code
+        run: mvn --batch-mode test
+
+  publish:
+    name: Publish Package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Java for publishing to GitHub Packages
+        uses: actions/checkout@v4
+        with:
+          java-version: '19'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build App
+        run: mvn --batch-mode package
+      - name: Publish JAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: file-system-search
+          path: target/FileSystemSearch-1.0-SNAPSHOT.jar
