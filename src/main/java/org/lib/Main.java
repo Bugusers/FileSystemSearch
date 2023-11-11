@@ -3,7 +3,6 @@ package org.lib;
 import org.lib.filesystemsearch.FileSystemSearch;
 import org.lib.filesystemsearch.FileSystemSearchWithTreadPool;
 
-import java.net.URL;
 import java.util.List;
 
 public class Main {
