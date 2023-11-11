@@ -1,4 +1,4 @@
-name: File system search app build pipeline
+name: File system search app publish pipeline
 on:
   push:
     branches:
@@ -32,7 +32,11 @@ jobs:
           java-version: '19'
           distribution: 'temurin'
           cache: maven
-      - name: Publish to GitHub Packages
-        run: mvn --batch-mode deploy
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build App
+        run: mvn --batch-mode package
+      - name: Publish JAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: file-system-search
+          path: target/FileSystemSearch-1.0-SNAPSHOT.jar
